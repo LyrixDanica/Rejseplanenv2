@@ -1,11 +1,6 @@
-# MMM-Template
-Use this template for creating new MagicMirror² modules.
+# MMM-Rejseplanen
 
-See the [wiki page](https://github.com/Dennis-Rosenbaum/MMM-Template/wiki) for an in depth overview of how to get started.
-
-# MMM-Template
-
-![Example of MMM-Template](./example_1.png)
+![Example of MMM-Rejseplanen](./example_1.png)
 
 [Module description]
 
@@ -13,7 +8,7 @@ See the [wiki page](https://github.com/Dennis-Rosenbaum/MMM-Template/wiki) for a
 
 ### Install
 
-In your terminal, go to your [MagicMirror²][mm] Module folder and clone MMM-Template:
+In your terminal, go to your [MagicMirror²][mm] Module folder and clone MMM-Rejseplanen:
 
 ```bash
 cd ~/MagicMirror/modules
@@ -23,7 +18,7 @@ git clone [GitHub url]
 ### Update
 
 ```bash
-cd ~/MagicMirror/modules/MMM-Template
+cd ~/MagicMirror/modules/MMM-Rejseplanen
 git pull
 ```
 
@@ -33,7 +28,7 @@ To use this module, add it to the modules array in the `config/config.js` file:
 
 ```js
     {
-        module: 'MMM-Template',
+        module: 'MMM-Rejseplanen',
         position: 'lower_third'
     },
 ```
@@ -42,7 +37,7 @@ Or you could use all the options:
 
 ```js
     {
-        module: 'MMM-Template',
+        module: 'MMM-Rejseplanen',
         position: 'lower_third',
         config: {
             exampleContent: 'Welcome world'
