@@ -39,7 +39,7 @@ Module.register("MMM-Rejseplanen", {
 
   getDom: function () {
     const wrapper = document.createElement("div");
-    wrapper.className = "rejseplanen";
+    wrapper.className = "rejseplanen small bright"; // Brug MagicMirrors standardfont og størrelse
 
     if (!this.departures.length) {
       wrapper.innerHTML = "Ingen tilgængelige data.";
@@ -96,6 +96,6 @@ Module.register("MMM-Rejseplanen", {
   },
 
   getStyles: function () {
-    return ["font-awesome.css"];
+    return ["font-awesome.css"]; // Brug kun standard styles
   }
 });
