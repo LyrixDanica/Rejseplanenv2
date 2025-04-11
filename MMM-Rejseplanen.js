@@ -1,8 +1,8 @@
-/* MagicMirror Modul: MMM-Rejseplanen - Klar til Rejseplanens nye API */
+/* MagicMirror Modul: MMM-Rejseplanen - Bruger Rejseplanens nye HAFAS.api v2 */
 Module.register("MMM-Rejseplanen", {
   defaults: {
-    stopPlaceId: "STOP_PLACE_ID", // Opdater med korrekt ID
-    apiKey: "YOUR_API_KEY",       // Sæt din API-nøgle her
+    stopId: "STOP_EXT_ID", // f.eks. "8100148" (skal erstattes med korrekt ekstern ID)
+    apiKey: "APIKEY",
     maxDepartures: 5,
     reloadInterval: 60 * 1000 // 1 minut
   },
@@ -20,16 +20,12 @@ Module.register("MMM-Rejseplanen", {
   },
 
   getDepartures: function () {
-    const url = `https://api.rejseplanen.dk/v2/departures?stopPlaceId=${this.config.stopPlaceId}&maxDepartures=${this.config.maxDepartures}`;
+    const url = `https://api.rejseplanen.dk/bin/rest.exe/departureBoard?id=${this.config.stopId}&maxDepartures=${this.config.maxDepartures}&format=json&accessId=${this.config.apiKey}`;
 
-    fetch(url, {
-      headers: {
-        "Authorization": `Bearer ${this.config.apiKey}`
-      }
-    })
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        this.departures = data.departures || [];
+        this.departures = data?.DepartureBoard?.Departure || [];
         this.updateDom();
       })
       .catch((err) => {
@@ -39,7 +35,7 @@ Module.register("MMM-Rejseplanen", {
 
   getDom: function () {
     const wrapper = document.createElement("div");
-    wrapper.className = "rejseplanen small bright"; // Brug MagicMirrors standardfont og størrelse
+    wrapper.className = "rejseplanen small bright";
 
     if (!this.departures.length) {
       wrapper.innerHTML = "Ingen tilgængelige data.";
@@ -60,22 +56,22 @@ Module.register("MMM-Rejseplanen", {
 
       const iconCell = document.createElement("td");
       const icon = document.createElement("i");
-      icon.className = this.getTransportIconClass(dep.transportMode);
+      icon.className = this.getTransportIconClass(dep.type);
       iconCell.appendChild(icon);
       row.appendChild(iconCell);
 
       const time = document.createElement("td");
-      const planned = dep.plannedDepartureTime?.substring(11, 16);
-      const realtime = dep.realtimeDepartureTime?.substring(11, 16);
+      const realtime = dep.rtTime;
+      const planned = dep.time;
       time.innerText = realtime && realtime !== planned ? `${realtime} ⚠️` : planned;
       row.appendChild(time);
 
       const line = document.createElement("td");
-      line.innerText = dep.lineLabel;
+      line.innerText = dep.line;
       row.appendChild(line);
 
       const direction = document.createElement("td");
-      direction.innerText = dep.destinationDisplay;
+      direction.innerText = dep.direction;
       row.appendChild(direction);
 
       table.appendChild(row);
@@ -86,7 +82,7 @@ Module.register("MMM-Rejseplanen", {
   },
 
   getTransportIconClass: function (type) {
-    switch (type) {
+    switch (type?.toLowerCase()) {
       case "bus": return "fas fa-bus";
       case "train": return "fas fa-train";
       case "metro": return "fas fa-subway";
@@ -96,6 +92,6 @@ Module.register("MMM-Rejseplanen", {
   },
 
   getStyles: function () {
-    return ["font-awesome.css"]; // Brug kun standard styles
+    return ["font-awesome.css"];
   }
 });
