@@ -1,8 +1,8 @@
 /* MagicMirror Modul: MMM-Rejseplanen - Bruger Rejseplanens nye HAFAS.api v2 */
 Module.register("MMM-Rejseplanen", {
   defaults: {
-    stopId: "STOP_EXT_ID", // f.eks. "8100148" (skal erstattes med korrekt ekstern ID)
-    apiKey: "APIKEY",
+    extId: "STOP_EXT_ID", // f.eks. "8100148" (skal erstattes med korrekt ekstern ID)
+    apiKey: "API",
     maxDepartures: 5,
     reloadInterval: 60 * 1000 // 1 minut
   },
@@ -20,7 +20,7 @@ Module.register("MMM-Rejseplanen", {
   },
 
   getDepartures: function () {
-    const url = `https://api.rejseplanen.dk/bin/rest.exe/departureBoard?id=${this.config.stopId}&maxDepartures=${this.config.maxDepartures}&format=json&accessId=${this.config.apiKey}`;
+    const url = `https://api.rejseplanen.dk/bin/rest.exe/departureBoard?extId=${this.config.extId}&maxDepartures=${this.config.maxDepartures}&format=json&type=DEP&accessId=${this.config.apiKey}`;
 
     fetch(url)
       .then((res) => res.json())
